@@ -9,6 +9,7 @@ import {FormsModule} from "@angular/forms";
 import {LoginComponent} from './login/login.component';
 import {RegisterComponent} from './login/register.component';
 import {PagesModule} from "./pages/pages.module";
+import { IncrementadorComponent } from './components/incrementador/incrementador.component';
 
 @NgModule({
   declarations: [
