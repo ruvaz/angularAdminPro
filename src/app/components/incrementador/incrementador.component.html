@@ -1,13 +1,25 @@
-<h3>{{leyendaHijo}}</h3>
+<h3>{{leyendaHijo}} - {{progreso}}</h3>
 <div class="input-group">
+  <!--  BOTON - -->
   <div class="input-group-prepend">
-    <button class="btn btn-primary" type="button" (click)="cambiaValor(-5)">
+    <button (click)="cambiaValor(-5)"
+            [ngClass]="btnClass"
+            type="button">
       <i class="mdi mdi-minus"></i>
     </button>
   </div>
-  <input type="text" class="form-control" value="{{progreso}}">
+  <!--  INPUT VALOR - caja de texto-->
+  <input type="number"
+         placeholder="Progreso"
+         class="form-control" min="1" max="100"
+         [ngClass]="{'is-invalid': progreso >100 || progreso <0 }"
+         (ngModelChange)="onChangess($event)"
+         [(ngModel)]="progreso">
   <div class="input-group-append">
-    <button class="btn btn-primary" type="button" (click)="cambiaValor(+5)">
+    <!--    BOTON +-->
+    <button (click)="cambiaValor(+5)"
+            [ngClass]="btnClass"
+            type="button">
       <i class="mdi mdi-plus"></i>
     </button>
   </div>

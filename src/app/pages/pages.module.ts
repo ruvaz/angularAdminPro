@@ -1,5 +1,4 @@
-
-import { NgModule } from '@angular/core';
+import {NgModule} from '@angular/core';
 
 import {DashboardComponent} from "./dashboard/dashboard.component";
 import {ProgressComponent} from "./progress/progress.component";
@@ -9,6 +8,8 @@ import {SharedModule} from "../shared/shared.module";
 
 import {PAGES_ROUTES} from "./pages.routes";
 import {IncrementadorComponent} from "../components/incrementador/incrementador.component";
+import {FormsModule} from "@angular/forms";
+import {CommonModule} from "@angular/common";
 
 
 @NgModule({
@@ -20,10 +21,12 @@ import {IncrementadorComponent} from "../components/incrementador/incrementador.
     IncrementadorComponent,
   ],
 
-  imports: [
-    SharedModule,
-    PAGES_ROUTES
-  ],
+    imports: [
+        SharedModule,
+        PAGES_ROUTES,
+        FormsModule,
+        CommonModule
+    ],
   exports: [
     PagesComponent,
     DashboardComponent,
@@ -32,4 +35,5 @@ import {IncrementadorComponent} from "../components/incrementador/incrementador.
   ],
 })
 
-export class PagesModule { }
+export class PagesModule {
+}
