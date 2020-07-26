@@ -7,9 +7,9 @@ import {PagesComponent} from "./pages.component";
 import {SharedModule} from "../shared/shared.module";
 
 import {PAGES_ROUTES} from "./pages.routes";
-import {IncrementadorComponent} from "../components/incrementador/incrementador.component";
 import {FormsModule} from "@angular/forms";
 import {CommonModule} from "@angular/common";
+import {ComponentsModule} from "../components/components.module";
 
 
 @NgModule({
@@ -18,15 +18,15 @@ import {CommonModule} from "@angular/common";
     DashboardComponent,
     ProgressComponent,
     Graficas1Component,
-    IncrementadorComponent,
   ],
 
-    imports: [
-        SharedModule,
-        PAGES_ROUTES,
-        FormsModule,
-        CommonModule
-    ],
+  imports: [
+    SharedModule,
+    PAGES_ROUTES,
+    FormsModule,
+    CommonModule,
+    ComponentsModule,
+  ],
   exports: [
     PagesComponent,
     DashboardComponent,

@@ -9,7 +9,7 @@ import {FormsModule} from "@angular/forms";
 import {LoginComponent} from './login/login.component';
 import {RegisterComponent} from './login/register.component';
 import {PagesModule} from "./pages/pages.module";
-import { IncrementadorComponent } from './components/incrementador/incrementador.component';
+import {ChartsModule} from "ng2-charts";
 
 @NgModule({
   declarations: [
@@ -17,12 +17,13 @@ import { IncrementadorComponent } from './components/incrementador/incrementador
     LoginComponent,
     RegisterComponent,
   ],
-  imports: [
-    BrowserModule,
-    PagesModule,
-    FormsModule,
-    AppRoutingModule,
-  ],
+    imports: [
+        BrowserModule,
+        PagesModule,
+        FormsModule,
+        AppRoutingModule,
+        ChartsModule,
+    ],
   providers: [],
   bootstrap: [AppComponent]
 })
