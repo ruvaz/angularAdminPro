@@ -1,14 +1,16 @@
 <div class="row">
+
   <div class="col-6">
     <h3>Grafica 1</h3>
     <app-dona titulo="Ventas"
-
-    [labels]="['comida','gasolina','luz']"></app-dona>
+              [labels]="['comida','gasolina','luz']"></app-dona>
   </div>
+
   <div class="col-6">
     <h3>Grafica 2</h3>
-    <app-dona
-      [data]="[234,765,587]"
+    <app-dona titulo="Instrumentos"
+              [labels]="label2"
+              [data]="data2"
     ></app-dona>
   </div>
 </div>
@@ -16,10 +18,14 @@
 <div class="row">
   <div class="col-6">
     <h3>Grafica 3</h3>
-    <app-dona></app-dona>
+    <app-dona titulo="Enciclopedias"
+              [labels]="label3"
+              [data]="data3"></app-dona>
   </div>
+
   <div class="col-6">
     <h3>Grafica 4</h3>
-    <app-dona></app-dona>
+    <app-dona
+    ></app-dona>
   </div>
 </div>
