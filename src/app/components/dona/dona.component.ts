@@ -11,9 +11,7 @@ export class DonaComponent implements OnInit {
   @Input() titulo: string = "Sin Titulo";
 
   @Input('labels') doughnutChartLabels: Label[]  = ['Label 1', 'Label 2', 'Label 3'];
-  @Input('data') doughnutChartData: MultiDataSet[] = [
-    [351, 451, 101]
-  ];
+  @Input('data') doughnutChartData: MultiDataSet[] ;
 
   // public doughnutChartLabels: Label[] = this.labels;
   // public doughnutChartData: MultiDataSet = [
