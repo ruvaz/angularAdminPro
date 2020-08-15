@@ -11,6 +11,7 @@ import {CommonModule} from "@angular/common";
 import {ComponentsModule} from "../components/components.module";
 import { AccountSettingsComponent } from './account-settings/account-settings.component';
 import {PagesRoutesModule} from "./pages.routes";
+import { PromesasComponent } from './promesas/promesas.component';
 
 
 @NgModule({
@@ -20,6 +21,7 @@ import {PagesRoutesModule} from "./pages.routes";
     ProgressComponent,
     Graficas1Component,
     AccountSettingsComponent,
+    PromesasComponent,
   ],
 
   imports: [

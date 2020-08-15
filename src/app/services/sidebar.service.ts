@@ -13,17 +13,10 @@ export class SidebarService {
         { titulo: "Main", url:'/' },
         { titulo: "ProgressBar", url:'progress' },
         { titulo: "Graficas", url:'graficas1' },
+        { titulo: "Promesas", url:'promesas' },
       ]
     },
-    {
-      titulo: "Dashboard2",
-      icono: "mdi mdi-gauge",
-      submenu: [
-        { titulo: "Main", url:'/' },
-        { titulo: "ProgressBar", url:'progress' },
-        { titulo: "Graficas", url:'graficas1' },
-      ]
-    }
+
   ];
 
   constructor() { }
