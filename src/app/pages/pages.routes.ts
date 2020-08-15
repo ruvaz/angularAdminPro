@@ -7,6 +7,7 @@ import {Graficas1Component} from "./graficas1/graficas1.component";
 import {NgModule} from "@angular/core";
 import {AccountSettingsComponent} from "./account-settings/account-settings.component";
 import {PromesasComponent} from "./promesas/promesas.component";
+import {RxjsComponent} from "./rxjs/rxjs.component";
 
 
 const routes: Routes = [
@@ -19,6 +20,7 @@ const routes: Routes = [
       {path: 'graficas1', component: Graficas1Component},
       {path: 'account-settings', component: AccountSettingsComponent},
       {path: 'promesas', component: PromesasComponent},
+      {path: 'rxjs', component: RxjsComponent},
     ]
   },
 ];

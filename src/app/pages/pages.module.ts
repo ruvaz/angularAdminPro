@@ -12,6 +12,7 @@ import {ComponentsModule} from "../components/components.module";
 import { AccountSettingsComponent } from './account-settings/account-settings.component';
 import {PagesRoutesModule} from "./pages.routes";
 import { PromesasComponent } from './promesas/promesas.component';
+import { RxjsComponent } from './rxjs/rxjs.component';
 
 
 @NgModule({
@@ -22,6 +23,7 @@ import { PromesasComponent } from './promesas/promesas.component';
     Graficas1Component,
     AccountSettingsComponent,
     PromesasComponent,
+    RxjsComponent,
   ],
 
   imports: [
