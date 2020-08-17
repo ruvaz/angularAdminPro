@@ -10,10 +10,27 @@ import {retry} from "rxjs/operators";
 export class RxjsComponent implements OnInit {
 
   constructor() {
+
+    this.retornaObservable().pipe(
+      //va a probar una y otra ves hasta que lo logre
+      retry(1) // 1 numero de reintentos a realizar
+    )
+      // objs detecta que nadie le escucha no se activa
+      .subscribe(
+        //para activar el obs hay que suscribirse para escucharlo
+        valor => console.log('subscribed: ', valor), //next
+        (error) => console.log('Error: ', error),  //error
+        () => console.log('Obs terminado')   //compleate
+      );
+
+
+  }
+
+  private retornaObservable(): Observable<number> {
     let i = -1;
 
     // el $ es para indicar que queremos que lo este observando, sera un observable
-    const obs$ = new Observable(observer => {
+    const obs$ = new Observable<number>(observer => {
       const intervalo = setInterval(() => {
         // console.log('tick');
         i++;
@@ -33,23 +50,10 @@ export class RxjsComponent implements OnInit {
       }, 1000);
     });
 
-
-    obs$.pipe(
-      //va a probar una y otra ves hasta que lo logre
-      retry(1) // 1 numero de reintentos a realizar
-    )
-      // objs detecta que nadie le escucha no se activa
-      .subscribe(
-        //para activar el obs hay que suscribirse para escucharlo
-        valor => console.log('subscribed: ', valor), //next
-        (error) => console.log('Error: ', error),  //error
-        () => console.log('Obs terminado')   //compleate
-      );
-
-
+    return obs$;
   }
 
   ngOnInit(): void {
-  }
 
+  }
 }
