@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
-import {Observable} from "rxjs";
-import {retry} from "rxjs/operators";
+import {interval, Observable} from "rxjs";
+import {map, retry, take} from "rxjs/operators";
 
 @Component({
   selector: 'app-rxjs',
@@ -24,8 +24,30 @@ export class RxjsComponent implements OnInit {
       );
 
 
+    this.retornaIntervalo()
+      .subscribe(console.log);
+    //   .subscribe((valor)=>{
+    //   console.log(valor);
+    // });
   }
 
+  //mas facil de entender y mantener usar las utils de rxjs
+  retornaIntervalo(): Observable<number> {
+    const intervalo$ = interval(1000)
+      .pipe(
+        //take dice cuando esta compleate el obs
+        take(7),
+        // recibe el valor de 0 y el sma uno
+        //map trnasforma lo que reciba a como queramos
+        map(valor => {
+          return valor + 1;
+          // return 'HOla mundo cruel '+valor;
+        })
+      );
+    return intervalo$;
+  }
+
+  // obener datos con logica sin usar utils de rxjs, es mas latoso
   private retornaObservable(): Observable<number> {
     let i = -1;
 
