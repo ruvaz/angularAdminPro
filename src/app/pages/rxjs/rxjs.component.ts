@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Observable} from "rxjs";
+import {retry} from "rxjs/operators";
 
 @Component({
   selector: 'app-rxjs',
@@ -9,34 +10,41 @@ import {Observable} from "rxjs";
 export class RxjsComponent implements OnInit {
 
   constructor() {
-      // el $ es para indicar que queremos que lo este observando, sera un observable
-    const obs$ = new Observable(observer =>{
+    let i = -1;
 
-      let i = -1;
-      const intervalo = setInterval( ()=>{
+    // el $ es para indicar que queremos que lo este observando, sera un observable
+    const obs$ = new Observable(observer => {
+      const intervalo = setInterval(() => {
         // console.log('tick');
-      i++;
-      // sigujiente valor que voy a emtir
+        i++;
+        // sigujiente valor que voy a emtir
         // el next se retorna al subscriber como valor
         observer.next(i);
 
-        if(i==4){
+        if (i == 4) {
           clearInterval(intervalo);
           observer.complete();
         }
-        if(i===2){
+        if (i === 2) {
+          console.log('i=2... error  ');
           observer.error('i llego al valor de 2');
         }
 
-      },1000);
+      }, 1000);
     });
-    // objs detecta que nadie le escucha no se activa
-    //para activar el obs hay que suscribirse para escucharlo
-    obs$.subscribe(
-      valor=> console.log('subscribed: ', valor), //next
-      (error)=>console.log('Error: ',error),  //error
-      ()=>console.log('Obs terminado')   //compleate
-    );
+
+
+    obs$.pipe(
+      //va a probar una y otra ves hasta que lo logre
+      retry(1) // 1 numero de reintentos a realizar
+    )
+      // objs detecta que nadie le escucha no se activa
+      .subscribe(
+        //para activar el obs hay que suscribirse para escucharlo
+        valor => console.log('subscribed: ', valor), //next
+        (error) => console.log('Error: ', error),  //error
+        () => console.log('Obs terminado')   //compleate
+      );
 
 
   }
