@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {notEqual} from "assert";
 import {UsuarioService} from "../../services/usuario.service";
+import Swal from 'sweetalert2'
 
 
 @Component({
@@ -18,7 +19,7 @@ export class RegisterComponent implements OnInit {
     email: ['qwe@asd.com', [Validators.required, Validators.email]],
     password: ['123', [Validators.required]],
     password2: ['123', [Validators.required]],
-    terminos: [false, [Validators.required]],
+    terminos: [false, [Validators.requiredTrue]],
   }, {
     validators: this.passwordsIguales('password', 'password2')
   });
@@ -26,8 +27,8 @@ export class RegisterComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
-    private service:UsuarioService
-              ) {
+    private usuarioService: UsuarioService
+  ) {
   }
 
   ngOnInit(): void {
@@ -39,12 +40,25 @@ export class RegisterComponent implements OnInit {
     // console.log(this.registerform.value); // valores de inputs
     console.log(this.registerform);  //todos los errores tambien
 
-    if (this.registerform.valid) {
-      console.log('Formulario enviado correctamente.')
-      this.formSubmitted = true;
-    } else {
-      console.log('Formulario no es correcto.')
+    this.formSubmitted = true;
+    if (this.registerform.invalid) {
+      return;
     }
+    //realizar el post  creando usuario
+    this.usuarioService.createUsuario(this.registerform.value). //enviamos la data del formulario
+      subscribe(resp => {
+        console.log('Usuar  io creado en DB');
+        console.log(resp);
+
+      }, (err) => {
+        // console.warn(err.error.msg);
+        Swal.fire({
+          title: 'Error!',
+          text: err.error.msg,
+          icon: 'error',
+          confirmButtonText: 'Cerrar'
+        });
+      });
   }
 
   campoNoValido(campo: string): boolean {
@@ -76,7 +90,7 @@ export class RegisterComponent implements OnInit {
       const pass1Control = formGroup.get(pass1);
       const pass2Control = formGroup.get(pass2);
 
-      if ( pass1Control.value === pass2Control.value) {
+      if (pass1Control.value === pass2Control.value) {
         pass2Control.setErrors(null);
       } else {
         pass2Control.setErrors({notEsIgual: true})

@@ -5,6 +5,7 @@
   <div class="login-box card">
     <div class="card-body">
       <form class="form-horizontal form-material"
+            autocomplete="off"
             id="loginform"
             [formGroup]="registerform"
             (ngSubmit)="crearUsuario()">
@@ -69,7 +70,6 @@
             <p *ngIf="campoNoValido('nombre')">* El Nombre es obligatorio</p>
             <p *ngIf="campoNoValido('email')">* El email es obligatorio y tiene que ser valido</p>
             <p *ngIf="contrasenasNoValidas()">* Las contraseñas deben ser identicas</p>
-            <p *ngIf="campoNoValido('terminos')">* Debe aceptar los terminos</p>
             <p *ngIf="aceptaTerminos()">* Debe aceptar los terminos</p>
           </div>
         </div>
