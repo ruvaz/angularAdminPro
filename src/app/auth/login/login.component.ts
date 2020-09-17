@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, NgZone, OnInit} from '@angular/core';
 import {Router} from "@angular/router";
 import {FormBuilder, Validators} from "@angular/forms";
 import {UsuarioService} from "../../services/usuario.service";
@@ -22,6 +22,7 @@ export class LoginComponent implements OnInit {
   // va a contener toda la autenticacion
   public auth2: any;
 
+  //ESTRUCTURA FORM
   public loginForm = this.fb.group({
     email: [localStorage.getItem('email') || '', [Validators.required, Validators.email]],
     password: ['', [Validators.required]],
@@ -31,22 +32,24 @@ export class LoginComponent implements OnInit {
   constructor(
     private router: Router,
     private fb: FormBuilder,
-    private usuarioService: UsuarioService
+    private usuarioService: UsuarioService,
+    private ngZone: NgZone
   ) {
   }
 
+  //LOGIN NORMAL FORM
   loginUsuario() {
-    console.log(this.loginForm.value)
-    //this.router.navigateByUrl('/');
+    // console.log(this.loginForm.value);
     this.usuarioService.loginUsuario(this.loginForm.value).subscribe(resp => {
-      console.log('Login exitoso...');
-      // console.log(resp);
+      console.log('Login de usuario exitoso...');
+
       if (this.loginForm.get('remember').value) {
         localStorage.setItem('email', this.loginForm.get('email').value)
       } else {
         localStorage.removeItem('email');
       }
-
+      //navegar al dashboard
+      this.router.navigateByUrl('/dashboard');
     }, (err) => {
       Swal.fire({
         title: 'Error!',
@@ -62,7 +65,7 @@ export class LoginComponent implements OnInit {
 
   // var id_token = googleUser.getAuthResponse().id_token;
 
-
+// Personalizacion del boton de google
   renderButton() {
     gapi.signin2.render('my-signin2', {
       'scope': 'profile email',
@@ -71,13 +74,12 @@ export class LoginComponent implements OnInit {
       'longtitle': true,
       'theme': 'dark',
     });
-
     this.startApp();
   }
 
-
+// Inicio de sesion con el script de google
   startApp() {
-    gapi.load('auth2',  () => {
+    gapi.load('auth2', () => {
       // Retrieve the singleton for the GoogleAuth library and set up the client.
       this.auth2 = gapi.auth2.init({
         client_id: environment.GOOGLE_ID,
@@ -89,14 +91,26 @@ export class LoginComponent implements OnInit {
     });
   };
 
+
+  //LOGIN USANDO GOOGLE
   attachSignin(element) {
     this.auth2.attachClickHandler(element, {},
       (googleUser) => {
-      // login con exito  se tiene token
+
         const id_token = googleUser.getAuthResponse().id_token;
+        console.log('Login de google exitoso...');
         console.log(id_token);
         //dispara la autenticacion
-        this.usuarioService.loginGoogle(id_token);
+        this.usuarioService.loginGoogle(id_token).subscribe(
+          resp=>{
+            //attachClickHandler es externa a anuglar por lo que causa error al invocar funciones de angular
+            //pora eso se debera de implementar ngZone para mandar a ejecutar algo en Angular
+            this.ngZone.run(() => {
+              //navegar al dashboard  con router de Angular en una fun eXterna x ngZone
+              this.router.navigateByUrl('/dashboard');
+            })
+          }
+        );
 
       }, (error) => {
         alert(JSON.stringify(error, undefined, 2));

@@ -3,6 +3,7 @@ import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {notEqual} from "assert";
 import {UsuarioService} from "../../services/usuario.service";
 import Swal from 'sweetalert2'
+import {Router} from "@angular/router";
 
 
 @Component({
@@ -26,6 +27,7 @@ export class RegisterComponent implements OnInit {
 
 
   constructor(
+    private router: Router,
     private fb: FormBuilder,
     private usuarioService: UsuarioService
   ) {
@@ -34,22 +36,20 @@ export class RegisterComponent implements OnInit {
   ngOnInit(): void {
   }
 
-
+  // REGISTER USUARIO
   crearUsuario() {
-
-    // console.log(this.registerform.value); // valores de inputs
-    console.log(this.registerform);  //todos los errores tambien
-
+   // console.log(this.registerform);  //todos los errores tambien
     this.formSubmitted = true;
     if (this.registerform.invalid) {
       return;
     }
+
     //realizar el post  creando usuario
     this.usuarioService.createUsuario(this.registerform.value). //enviamos la data del formulario
       subscribe(resp => {
-        console.log('Usuar  io creado en DB');
-        console.log(resp);
-
+        console.log('Registro de nuevo usuario completo...');
+        //navegar al dashboard
+        this.router.navigateByUrl('/dashboard');
       }, (err) => {
         // console.warn(err.error.msg);
         Swal.fire({
@@ -61,6 +61,7 @@ export class RegisterComponent implements OnInit {
       });
   }
 
+  // Validator VALIDA CUALQUIER CAMPO
   campoNoValido(campo: string): boolean {
     if (this.registerform.get(campo).invalid && this.formSubmitted) {
       return true;
@@ -69,10 +70,13 @@ export class RegisterComponent implements OnInit {
     }
   }
 
+  // Valida TERMINOS
   aceptaTerminos() {
     return !this.registerform.get('terminos').value && this.formSubmitted;
   }
 
+
+  // validator para contraseña
   contrasenasNoValidas() {
     const pass1 = this.registerform.get('password').value;
     const pass2 = this.registerform.get('password2').value;
@@ -85,6 +89,7 @@ export class RegisterComponent implements OnInit {
 
   }
 
+// custom Validator para passwpd
   passwordsIguales(pass1: string, pass2: string) {
     return (formGroup: FormGroup) => {
       const pass1Control = formGroup.get(pass1);
