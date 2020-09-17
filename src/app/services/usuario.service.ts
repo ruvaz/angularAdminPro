@@ -32,16 +32,20 @@ export class UsuarioService {
 
 
   googleInit() {
-    gapi.load('auth2', () => {
-      // Retrieve the singleton for the GoogleAuth library and set up the client.
-      this.auth2 = gapi.auth2.init({
-        client_id: environment.GOOGLE_ID,
-        cookiepolicy: 'single_host_origin',
-        // Request scopes in addition to 'profile' and 'email'
-        //scope: 'additional_scope'
+    return new Promise(resolve => {
+
+      console.log('Google Init...')
+      gapi.load('auth2', () => {
+        // Retrieve the singleton for the GoogleAuth library and set up the client.
+        this.auth2 = gapi.auth2.init({
+          client_id: environment.GOOGLE_ID,
+          cookiepolicy: 'single_host_origin',
+        });
+        resolve();
       });
 
     });
+
 
   }
 
