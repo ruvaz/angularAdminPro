@@ -20,6 +20,8 @@ export class UsuarioService {
 
 
   public auth2: any;
+  public usuario:Usuario;
+
 
   //se puede hace con rjx o el propio de anguar que es lo mas rapido HttpClientModule importado en el auth module
   constructor(
@@ -63,18 +65,24 @@ export class UsuarioService {
   //verificar el token con renewToken
   validarToken(): Observable<boolean> {
     const token = localStorage.getItem('token') || '';
-    return this.http.get(`${base_url}/login`, {
+    return this.http.get(`${base_url}/login/renew`, {
       headers: {
         'x-token': token
       }
     }).pipe(
       tap(
         (resp: any) => {
+           // this.usuario = resp.usuario;  //puede generar error y no es un inicializacion
+          const {email,google,nombre,role,uid,img} = resp.usuario;  //restructura de resp
+          this.usuario = new Usuario(nombre,email, '',img,google,role,uid)  //crear un objeto usuario
           localStorage.setItem('token', resp.token);
         }
       ),
       map(resp => true),
-      catchError(error => of(false))
+      catchError(error => {
+        console.log(error);
+        of(false)
+      })  //no se pudo conectar
     );
 
   }
