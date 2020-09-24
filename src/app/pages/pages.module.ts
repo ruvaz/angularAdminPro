@@ -6,13 +6,14 @@ import {Graficas1Component} from "./graficas1/graficas1.component";
 import {PagesComponent} from "./pages.component";
 import {SharedModule} from "../shared/shared.module";
 
-import {FormsModule} from "@angular/forms";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {CommonModule} from "@angular/common";
 import {ComponentsModule} from "../components/components.module";
 import { AccountSettingsComponent } from './account-settings/account-settings.component';
 import {PagesRoutesModule} from "./pages.routes";
 import { PromesasComponent } from './promesas/promesas.component';
 import { RxjsComponent } from './rxjs/rxjs.component';
+import { PerfilComponent } from './perfil/perfil.component';
 
 
 @NgModule({
@@ -24,12 +25,14 @@ import { RxjsComponent } from './rxjs/rxjs.component';
     AccountSettingsComponent,
     PromesasComponent,
     RxjsComponent,
+    PerfilComponent,
   ],
 
   imports: [
     SharedModule,
     PagesRoutesModule,
     FormsModule,
+    ReactiveFormsModule,
     CommonModule,
     ComponentsModule,
 

@@ -1,9 +1,11 @@
 import { Injectable } from '@angular/core';
+import {UsuarioService} from "./usuario.service";
 
 @Injectable({
   providedIn: 'root'
 })
 export class SidebarService {
+
 
   menu: any[] = [
     {
@@ -20,7 +22,8 @@ export class SidebarService {
 
   ];
 
-  constructor() { }
+
+  constructor() {  }
 
 
 
