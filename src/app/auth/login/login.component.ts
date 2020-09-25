@@ -2,7 +2,7 @@ import {Component, NgZone, OnInit} from '@angular/core';
 import {Router} from "@angular/router";
 import {FormBuilder, Validators} from "@angular/forms";
 import {UsuarioService} from "../../services/usuario.service";
-import {LoginForm} from "../../interfaces/login-form.interface";
+import {LoginFormInterface} from "../../interfaces/login-form.interface";
 import Swal from "sweetalert2";
 import {environment} from "../../../environments/environment";
 

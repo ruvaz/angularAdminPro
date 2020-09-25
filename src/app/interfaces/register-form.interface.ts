@@ -1,6 +1,6 @@
 // sirven para forzar que unas clases tengan una forma especifica
 
-export interface RegisterForm {
+export interface registerFormInterface {
   nombre: string;
   email: string;
   password1: string;

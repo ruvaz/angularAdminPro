@@ -1,12 +1,13 @@
 import {Injectable, NgZone} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {Usuario} from "../models/usuario.model";
-import {RegisterForm} from "../interfaces/register-form.interface";
+import {registerFormInterface} from "../interfaces/register-form.interface";
 import {environment} from "../../environments/environment";
-import {LoginForm} from "../interfaces/login-form.interface";
+import {LoginFormInterface} from "../interfaces/login-form.interface";
 import {catchError, map, tap} from "rxjs/operators";
 import {Observable, of} from "rxjs";
 import {Router} from "@angular/router";
+import {CargarUsuariosInterface} from "../interfaces/cargar-usuarios.interface";
 
 
 const base_url = environment.base_url;
@@ -40,6 +41,13 @@ export class UsuarioService {
     return this.usuario.uid || '';
   }
 
+  get headers(){
+    return {
+      headers: {
+        'x-token': this.token
+      }
+    };
+  }
   //funcion para iniciar el script de google
   googleInit() {
     return new Promise(resolve => {
@@ -94,7 +102,7 @@ export class UsuarioService {
 
 
   //formData de tipo interface registerForm
-  createUsuario(formData: RegisterForm) {
+  createUsuario(formData: registerFormInterface) {
     //enviar la data por post al backend
     return this.http.post(`${base_url}/usuarios`, formData)
       .pipe(
@@ -126,7 +134,7 @@ export class UsuarioService {
       );
   }
 
-  loginUsuario(formData: LoginForm) {
+  loginUsuario(formData: LoginFormInterface) {
     return this.http.post(`${base_url}/login`, formData)
       .pipe(
         tap((resp: any) => {
@@ -152,4 +160,31 @@ export class UsuarioService {
       );
   }
 
+  //show usuarios
+  cargarUsuarios(desde:number=0){
+    const url = `${base_url}/usuarios?desde=${desde}`;
+    return this.http.get<CargarUsuariosInterface>(url, this.headers)
+      .pipe(
+        map(
+            resp=>{
+              // console.log(resp) // array object  {total: _ , usuarios: _ }
+              const usuarios = resp.usuarios.map(
+                user => new Usuario(
+                  user.nombre,
+                  user.email,
+                  '',
+                  user.img,
+                  user.google,
+                  user.role,
+                  user.uid
+                )
+              );
+              return {
+                total: resp.total,
+                usuarios
+              }
+            }
+        )
+      );
+  }
 }
