@@ -4,7 +4,6 @@ const base_url = environment.base_url;
 
 export class Usuario {
 
-
   constructor(
     public nombre: string,
     public email: string,
@@ -13,17 +12,18 @@ export class Usuario {
     public google?: boolean,
     public role?: string,
     public uid?: string
-  ) {}
+  ) {
+  }
 
 
-  getImagenUrl(){
-    if(!this.img){
+  getImagenUrl() {
+    if (!this.img) {
       return `${base_url}/upload/usuarios/no-image`;
-    }else if(this.img.includes('https')){
+    } else if (this.img.includes('https')) {
       return this.img;  //url con https
-    }else if(this.img){
+    } else if (this.img) {
       return `${base_url}/upload/usuarios/${this.img}`; //url sin https
-    }else{
+    } else {
       return `${base_url}/upload/usuarios/no-image`; //url local no image sin https
     }
   }

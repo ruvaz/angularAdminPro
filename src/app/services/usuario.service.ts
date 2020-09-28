@@ -41,13 +41,14 @@ export class UsuarioService {
     return this.usuario.uid || '';
   }
 
-  get headers(){
+  get headers() {
     return {
       headers: {
         'x-token': this.token
       }
     };
   }
+
   //funcion para iniciar el script de google
   googleInit() {
     return new Promise(resolve => {
@@ -107,28 +108,27 @@ export class UsuarioService {
     return this.http.post(`${base_url}/usuarios`, formData)
       .pipe(
         tap((resp: any) => {
-          console.log('Usuario creado - token jwt')
-          console.log(resp.token)
+          // console.log('Usuario creado - token jwt')
           localStorage.setItem('token', resp.token)
         })
       );
 
   }
 
-  updateUsuario(data: { email: string, nombre: string, role:string }) {
+  // actualizarPerfil
+  updateUsuario(data: { email: string, nombre: string, role: string }) {
 
     data = {
       ...data,
-      role: this.usuario.role   //se le agrega el campo role
+      role: this.usuario.role   //agrega el campo role, por que no esta visible en el form
     }
-    return this.http.put(`${base_url}/usuarios/${this.uid}`, data, {
-      headers: {
-        'x-token': this.token
-      }
-    }).pipe(
+
+    return this.http.put(`${base_url}/usuarios/${this.uid}`, data, this.headers)
+      .pipe(
         tap((resp: any) => {
-         // console.log('Usuario creado - token jwt')
-         // console.log(resp) // usuario json { }
+          // console.log('Usuario creado - token jwt')
+          // console.log(resp) // usuario json { }
+          // Refrescar token
           localStorage.setItem('token', this.token)
         })
       );
@@ -138,8 +138,8 @@ export class UsuarioService {
     return this.http.post(`${base_url}/login`, formData)
       .pipe(
         tap((resp: any) => {
-          console.log('login usuario -jwt');
-          console.log(resp.token);
+          // console.log('login usuario -jwt');
+          // console.log(resp.token);
           localStorage.setItem('token', resp.token)
         })
       );
@@ -154,37 +154,45 @@ export class UsuarioService {
       .pipe(
         tap((resp: any) => {
           console.log('Token JWT despues de el token de google....');
-          console.log(resp.token);
           localStorage.setItem('token', resp.token);
         })
       );
   }
 
   //show usuarios
-  cargarUsuarios(desde:number=0){
+  cargarUsuarios(desde: number = 0) {
     const url = `${base_url}/usuarios?desde=${desde}`;
     return this.http.get<CargarUsuariosInterface>(url, this.headers)
       .pipe(
         map(
-            resp=>{
-              // console.log(resp) // array object  {total: _ , usuarios: _ }
-              const usuarios = resp.usuarios.map(
-                user => new Usuario(
-                  user.nombre,
-                  user.email,
-                  '',
-                  user.img,
-                  user.google,
-                  user.role,
-                  user.uid
-                )
-              );
-              return {
-                total: resp.total,
-                usuarios
-              }
+          resp => {
+            // console.log(resp) // array object  {total: _ , usuarios: _ }
+            const usuarios = resp.usuarios.map(
+              user => new Usuario(
+                user.nombre, user.email, '',
+                user.img, user.google, user.role, user.uid
+              )
+            );
+            return {
+              total: resp.total,
+              usuarios
             }
+          }
         )
       );
   }
+
+  // Elimina un usuario
+  eliminarUsuario(usuario: Usuario) {
+    const url = `${base_url}/usuarios/${usuario.uid}`;
+    return this.http.delete(url, this.headers);
+  }
+
+  //actualiza role o info de un usuario en particular
+  guardarUsuario(usuario: Usuario) {
+    const url = `${base_url}/usuarios/${usuario.uid}`;
+    return this.http.put(url, usuario, this.headers);
+  }
+
+
 }

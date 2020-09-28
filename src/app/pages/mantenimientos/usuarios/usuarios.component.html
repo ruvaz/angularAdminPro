@@ -1,17 +1,21 @@
-<div class="row animated fadein fast">
-  <div class="col-12">
+<div class="row animated fadein ">
+  <div class="col-6">
     <div class="card">
       <div class="card-body">
-        <input type="text" class="form-control" placeholder="Buscar usuario...">
-
-
+        <input type="text"
+               class="form-control"
+               placeholder="Buscar usuario..."
+               (keyup)="buscar(txtTermino.value)"
+                #txtTermino>
+        <!--        txtTermino.value       referencia a si mismo -->
       </div>
     </div>
   </div>
 </div>
 
 
-<div class="row animated fadein fast">
+<div *ngIf="cargando"
+  class="row animated fadein fast">
   <div class="col-12">
     <div class="alert alert-info text-center" role="alert">
       <h4 class="alert-heading">Cargando</h4>
@@ -22,7 +26,8 @@
 </div>
 
 
-<div class="row animated fadein">
+<div *ngIf="!cargando"
+  class="row animated fadein">
   <div class="col-12">
     <div class="card">
       <div class="card-body">
@@ -35,7 +40,7 @@
               <th class="w100">Avatar</th>
               <th>Correo</th>
               <th>Nombre</th>
-              <th class="w100">Role</th>
+              <th class="w140">Role</th>
               <th class="w100">Auth</th>
               <th class="text-nowrap w100">Acciones</th>
             </tr>
@@ -45,24 +50,32 @@
               <td><img [src]="usuario.getImagenUrl()" class="avatar" alt=""></td>
               <td> {{usuario.email}}</td>
               <td> {{usuario.nombre}}</td>
-              <td> {{usuario.role}}</td>
               <td>
+                <select [(ngModel)]="usuario.role"
+                        (change)="cambiarRole(usuario)"
+                        class="form-control">
+                  <option value="ADMIN_ROLE">Admin</option>
+                  <option value="USER_ROLE">User</option>
+                </select>
+              </td>
+              <td class="text-center">
                 <div *ngIf="!usuario.google" class="label label-table label-info">E-mail</div>
                 <div *ngIf="usuario.google"  class="label label-table label-danger">Google</div>
               </td>
-              <td class="text-nowrap">
-                <a href="#" data-toggle="tooltip" data-original-title="Edit"> <i class="fa fa-pencil text-inverse m-r-10"></i> </a>
-                <a href="#" data-toggle="tooltip" data-original-title="Close"> <i class="fa fa-close text-danger"></i> </a>
+              <td class="text-nowrap text-center">
+
+                <a (click)="eliminarUsuario(usuario)" class="cursor" data-toggle="tooltip" data-original-title="Borrar">
+                  <i class="fa fa-close text-danger"></i> </a>
               </td>
             </tr>
 
             </tbody>
           </table>
         </div>
-
-        <button class="btn btn-secondary" (click)="cambiarPagina(-5)">Anteriores</button>
-        &nbsp;
-        <button class="btn btn-secondary" (click)="cambiarPagina(+5)">Siguientes</button>
+          <div *ngIf="txtTermino.value.length===0">
+            <button class="btn btn-secondary" (click)="cambiarPagina(-5)">Anteriores</button>&nbsp;
+            <button class="btn btn-secondary" (click)="cambiarPagina(+5)">Siguientes</button>
+          </div>
       </div>
     </div>
   </div>
