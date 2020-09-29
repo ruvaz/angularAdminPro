@@ -1,1 +1,50 @@
-<p>modal-imagen works!</p>
+<div class="fondo-modal-imagen  animated fadeIn fast"
+     [class.ocultar]="modalImagenService.ocultarModal">
+
+  <div id="responsive-modal"
+       class="modal fade show"
+       tabindex="-1" role="dialog"
+       aria-labelledby="myModalLabel"
+       style="display: block;">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">Cargar imagen</h4>
+          <button type="button" class="close" (click)="cerrarModal()" data-dismiss="modal" aria-hidden="true">×</button>
+        </div>
+        <div class="modal-body">
+          <h3>Seleccione una imagen</h3>
+
+          <div class="text-center">
+
+            <img *ngIf="!imgTemp" [src]="modalImagenService.img" class="img-avatar">
+            <img *ngIf="imgTemp" [src]="imgTemp" class="img-avatar">
+          </div>
+          <input type="file"
+                 (change)="cambiarImagen($event.target.files[0])">
+
+          <!--        <form>-->
+          <!--          <div class="form-group">-->
+          <!--            <label for="recipient-name" class="control-label">Recipient:</label>-->
+          <!--            <input type="text" class="form-control" id="recipient-name">-->
+          <!--          </div>-->
+          <!--          <div class="form-group">-->
+          <!--            <label for="message-text" class="control-label">Message:</label>-->
+          <!--            <textarea class="form-control" id="message-text"></textarea>-->
+          <!--          </div>-->
+          <!--        </form>-->
+        </div>
+        <div class="modal-footer">
+          <button type="button"
+                  class="btn btn-default waves-effect"
+                  (click)="cerrarModal()"
+                  data-dismiss="modal">Cancelar</button>
+          <button type="button"
+                  (click)="subirImagen()"
+                  class="btn btn-danger waves-effect waves-light">Actualizar foto</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>

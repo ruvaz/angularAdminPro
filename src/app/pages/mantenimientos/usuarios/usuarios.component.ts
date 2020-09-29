@@ -1,15 +1,19 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
+import {delay} from "rxjs/operators";
+import Swal from "sweetalert2";
+
 import {UsuarioService} from "../../../services/usuario.service";
 import {Usuario} from "../../../models/usuario.model";
 import {BusquedasService} from "../../../services/busquedas.service";
-import Swal from "sweetalert2";
+import {ModalImagenService} from "../../../services/modal-imagen.service";
+import {Subscription} from "rxjs";
 
 @Component({
   selector: 'app-usuarios',
   templateUrl: './usuarios.component.html',
   styles: []
 })
-export class UsuariosComponent implements OnInit {
+export class UsuariosComponent implements OnInit, OnDestroy {
 
   public totalUsuarios: number = 0;
   public usuarios: Usuario[] = [];
@@ -17,16 +21,25 @@ export class UsuariosComponent implements OnInit {
   public desde: number = 0;
   public cargando: boolean = true;
 
+  public imgSubs: Subscription;
+
   constructor(
     private usuarioService: UsuarioService,
-    private  busquedaService: BusquedasService
+    private  busquedaService: BusquedasService,
+    private modalImagenService: ModalImagenService
   ) {
   }
 
   ngOnInit(): void {
     this.cargarUsuarios();
+    this.imgSubs = this.modalImagenService.nuevaImagen
+      .pipe(delay(100))
+      .subscribe(img => this.cargarUsuarios());
   }
 
+  ngOnDestroy(): void {
+    this.imgSubs.unsubscribe();
+  }
 
   cargarUsuarios() {
     this.cargando = true;
@@ -67,8 +80,8 @@ export class UsuariosComponent implements OnInit {
   }
 
   eliminarUsuario(usuario: Usuario) {
-    if(usuario.uid === this.usuarioService.uid){
-      return Swal.fire('Error','No puede borrar su propio usuario','error');
+    if (usuario.uid === this.usuarioService.uid) {
+      return Swal.fire('Error', 'No puede borrar su propio usuario', 'error');
     }
 
     Swal.fire({
@@ -96,10 +109,17 @@ export class UsuariosComponent implements OnInit {
 
   }
 
-  cambiarRole(usuario:Usuario){
+  cambiarRole(usuario: Usuario) {
     this.usuarioService.guardarUsuario(usuario)
-      .subscribe(resp =>{
+      .subscribe(resp => {
         // console.log(resp);
       });
   }
+
+
+  abrirModal(usuario: Usuario) {
+    this.modalImagenService.abrirModal('usuarios', usuario.uid, usuario.img)
+  }
+
+
 }
