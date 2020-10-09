@@ -4,6 +4,7 @@ import {environment} from "../../environments/environment";
 import {map} from "rxjs/operators";
 import {Usuario} from "../models/usuario.model";
 import {Hospital} from "../models/hospital.model";
+import {Medico} from "../models/medico.model";
 
 const base_url = environment.base_url;
 
@@ -44,6 +45,14 @@ export class BusquedasService {
     );
   }
 
+  private transformarMedicos(resultados: any[]): Medico[] {
+    return resultados.map(
+      medico => new Medico(medico.nombre, medico.img,)
+    );
+  }
+
+
+
   buscar(
     tipo: 'usuarios' | 'medicos' | 'hospitales',
     termino: string = ''
@@ -61,7 +70,7 @@ export class BusquedasService {
               return this.transformarHospitales(resp.resultados);
               break;
             case 'medicos':
-              return this.transformarUsuarios(resp.resultados);
+              return this.transformarMedicos(resp.resultados);
               break;
 
           }
