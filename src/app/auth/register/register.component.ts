@@ -45,7 +45,7 @@ export class RegisterComponent implements OnInit {
     }
 
     //realizar el post  creando usuario
-    this.usuarioService.createUsuario(this.registerform.value). //enviamos la data del formulario
+    this.usuarioService.crearUsuario(this.registerform.value). //enviamos la data del formulario
       subscribe(resp => {
         console.log('Registro de nuevo usuario completo...');
         //navegar al dashboard

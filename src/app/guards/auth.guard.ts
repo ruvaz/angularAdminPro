@@ -18,13 +18,14 @@ export class AuthGuard implements CanActivate {
   canActivate(
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot) {
-
+    // valida que el usuario este autenticado y sino lo saca al login
     return this.usuarioService.validarToken()
       .pipe(
         tap(
           isAutenticated => {
+            // Si no esta autenticado lo saca
             if (!isAutenticated) {
-              this.router.navigateByUrl('/login')
+              this.router.navigateByUrl('/login');
             }
           }
         )

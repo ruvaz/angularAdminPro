@@ -16,27 +16,35 @@ import {UsuariosComponent} from "./mantenimientos/usuarios/usuarios.component";
 import {HospitalesComponent} from "./mantenimientos/hospitales/hospitales.component";
 import {MedicosComponent} from "./mantenimientos/medicos/medicos.component";
 import {MedicoComponent} from "./mantenimientos/medicos/medico.component";
+import {BusquedaComponent} from "./busqueda/busqueda.component";
+import {AdminGuard} from "../guards/admin.guard";
 
 
 const routes: Routes = [
   {
     path: 'dashboard',
     component: PagesComponent,
-    canActivate:[AuthGuard],
+    canActivate: [AuthGuard],
     children: [
-      {path: '', component: DashboardComponent, data:{titulo:'Dashboard'}},
-      {path: 'account-settings', component: AccountSettingsComponent, data:{titulo:'Account Settings'}},
-      {path: 'graficas1', component: Graficas1Component, data:{titulo:'Graficas 1'}},
-      {path: 'perfil', component: PerfilComponent, data:{titulo:'Perfil de usuario'}},
-      {path: 'promesas', component: PromesasComponent, data:{titulo:'Promesas'}},
-      {path: 'progress', component: ProgressComponent, data:{titulo:'Progress Bar'}},
-      {path: 'rxjs', component: RxjsComponent, data:{titulo:'RSJX'}},
+      {path: '', component: DashboardComponent, data: {titulo: 'Dashboard'}},
+      {path: 'account-settings', component: AccountSettingsComponent, data: {titulo: 'Account Settings'}},
+      {path: 'graficas1', component: Graficas1Component, data: {titulo: 'Graficas 1'}},
+      {path: 'search/:termino', component: BusquedaComponent, data: {titulo: 'Busqueda'}},
+      {path: 'perfil', component: PerfilComponent, data: {titulo: 'Perfil de usuario'}},
+      {path: 'promesas', component: PromesasComponent, data: {titulo: 'Promesas'}},
+      {path: 'progress', component: ProgressComponent, data: {titulo: 'Progress Bar'}},
+
+      {path: 'rxjs', component: RxjsComponent, data: {titulo: 'RSJX'}},
 
       //Mantenimientos
-      {path: 'usuarios', component: UsuariosComponent, data:{titulo:'Mantenimiento de Usuarios'}},
-      {path: 'hospitales', component: HospitalesComponent, data:{titulo:'Mantenimiento de Hospitales'}},
-      {path: 'medicos', component: MedicosComponent, data:{titulo:'Mantenimiento de Medicos'}},
-      {path: 'medicos/:id', component: MedicoComponent, data:{titulo:'Mantenimiento de Medico'}},
+
+      {path: 'hospitales', component: HospitalesComponent, data: {titulo: 'Mantenimiento de Hospitales'}},
+      {path: 'medicos', component: MedicosComponent, data: {titulo: 'Mantenimiento de Medicos'}},
+      {path: 'medicos/:id', component: MedicoComponent, data: {titulo: 'Mantenimiento de Medico'}},
+
+      //admin links
+
+      {path: 'usuarios', canActivate: [AdminGuard],component: UsuariosComponent, data: {titulo: 'Mantenimiento de Usuarios'}},
     ]
   },
 ];

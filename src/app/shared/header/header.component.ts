@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {UsuarioService} from "../../services/usuario.service";
 import {Usuario} from "../../models/usuario.model";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-header',
@@ -9,17 +10,27 @@ import {Usuario} from "../../models/usuario.model";
 })
 export class HeaderComponent {
 
-  public usuario:Usuario;
+  public usuario: Usuario;
 
   constructor(
-    private usuarioService: UsuarioService
+    private usuarioService: UsuarioService,
+    private router: Router
   ) {
-    this.usuario= usuarioService.usuario;
+    this.usuario = usuarioService.usuario;
   }
 
 
   logoutDeUsuario() {
     this.usuarioService.logoutUsuario();
     console.log('Logout hecho...')
+  }
+
+  busquedaGlobal(termino: string) {
+
+    if (termino.length===0){
+      return;
+    }
+    //redireccion a pagina de resultados de busqueda
+    this.router.navigateByUrl(`/dashboard/search/${termino}`);
   }
 }

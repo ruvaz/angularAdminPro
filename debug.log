@@ -1,0 +1,8 @@
+[1016/123430.578:ERROR:directory_reader_win.cc(43)] FindFirstFile: El sistema no puede encontrar la ruta especificada. (0x3)
+[1019/173035.559:ERROR:directory_reader_win.cc(43)] FindFirstFile: El sistema no puede encontrar la ruta especificada. (0x3)
+[1020/152822.409:ERROR:process_info.cc(329)] VirtualQueryEx: Acceso denegado. (0x5)
+[1020/152822.424:ERROR:process_info.cc(329)] VirtualQueryEx: Acceso denegado. (0x5)
+[1020/152822.440:ERROR:process_info.cc(556)] ReadMemoryInfo failed
+[1020/152822.440:ERROR:process_info.cc(556)] ReadMemoryInfo failed
+[1020/152822.440:ERROR:scoped_process_suspend.cc(40)] NtResumeProcess: Se intentó obtener acceso a un proceso que está cerrándose. (0xc000010a)
+[1020/152822.440:ERROR:scoped_process_suspend.cc(40)] NtResumeProcess: Se intentó obtener acceso a un proceso que está cerrándose. (0xc000010a)

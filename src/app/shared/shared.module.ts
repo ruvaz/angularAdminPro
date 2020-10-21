@@ -6,6 +6,7 @@ import {BreadcrumbsComponent} from "./breadcrumbs/breadcrumbs.component";
 import {NopagefoundComponent} from "./nopagefound/nopagefound.component";
 import {RouterModule} from "@angular/router";
 import {CommonModule} from "@angular/common";
+import {FormsModule} from "@angular/forms";
 
 @NgModule({
   declarations: [
@@ -16,7 +17,8 @@ import {CommonModule} from "@angular/common";
   ],
   imports: [
     RouterModule,
-    CommonModule
+    CommonModule,
+    FormsModule
   ],
   exports: [
     BreadcrumbsComponent,

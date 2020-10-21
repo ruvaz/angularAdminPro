@@ -8,7 +8,9 @@ import {catchError, map, tap} from "rxjs/operators";
 import {Observable, of} from "rxjs";
 import {Router} from "@angular/router";
 import {CargarUsuariosInterface} from "../interfaces/cargar-usuarios.interface";
+import Swal from "sweetalert2";
 
+const swal = Swal;
 
 const base_url = environment.base_url;
 declare const gapi: any;
@@ -41,6 +43,10 @@ export class UsuarioService {
     return this.usuario.uid || '';
   }
 
+  get role(): 'ADMIN_ROLE' | 'USER_ROLE' {
+    return this.usuario.role;
+  }
+
   get headers() {
     return {
       headers: {
@@ -69,9 +75,12 @@ export class UsuarioService {
   }
 
   logoutUsuario() {
+
     localStorage.removeItem('token');
+    localStorage.removeItem('menu');
+
     this.auth2.signOut().then(() => {   //sighout => libreria externa a angular
-      console.log('User signed out google...');
+      console.log('User signed out ...');
       this.ngZone.run(() => {
         this.router.navigateByUrl('/login');  //hace ejecucion de esto en angular
       })
@@ -92,7 +101,9 @@ export class UsuarioService {
           // this.usuario = resp.usuario;  //puede generar error y no es un inicializacion
           const {email, google, nombre, role, uid, img = ''} = resp.usuario;  //restructura de resp
           this.usuario = new Usuario(nombre, email, '', img, google, role, uid)  //crear un objeto usuario
-          localStorage.setItem('token', resp.token);
+
+          this.guardarSesionLocalstorage(resp.token, resp.menu); // guardar token y menu en localstorage
+
           return true;
         }
       ),
@@ -103,16 +114,22 @@ export class UsuarioService {
 
 
   //formData de tipo interface registerForm
-  createUsuario(formData: registerFormInterface) {
+  crearUsuario(formData: registerFormInterface) {
     //enviar la data por post al backend
     return this.http.post(`${base_url}/usuarios`, formData)
       .pipe(
         tap((resp: any) => {
           // console.log('Usuario creado - token jwt')
-          localStorage.setItem('token', resp.token)
+          this.guardarSesionLocalstorage(resp.token, resp.menu); // guardar token y menu en localstorage
         })
       );
-
+      // .map((resp:any)=>{
+      //   swal('Usuario Creado', formData.email,'success');
+      //   return resp.usuario;
+      // }).catch(err=>{
+      //   swal('Error en el Login',err.error.mensaje,'error');
+      //   return Observable.throw(err);
+      // });
   }
 
   // actualizarPerfil
@@ -134,13 +151,19 @@ export class UsuarioService {
       );
   }
 
+  guardarSesionLocalstorage(token: string, menu: any) {
+    localStorage.setItem('token', token);
+    localStorage.setItem('menu', JSON.stringify(menu));
+  }
+
   loginUsuario(formData: LoginFormInterface) {
     return this.http.post(`${base_url}/login`, formData)
       .pipe(
         tap((resp: any) => {
           // console.log('login usuario -jwt');
           // console.log(resp.token);
-          localStorage.setItem('token', resp.token)
+          // localStorage.setItem('token', resp.token)
+          this.guardarSesionLocalstorage(resp.token, resp.menu); // guardar token y menu en localstorage
         })
       );
   }
@@ -154,7 +177,8 @@ export class UsuarioService {
       .pipe(
         tap((resp: any) => {
           console.log('Token JWT despues de el token de google....');
-          localStorage.setItem('token', resp.token);
+
+          this.guardarSesionLocalstorage(resp.token, resp.menu);
         })
       );
   }
