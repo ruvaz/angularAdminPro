@@ -1,14 +1,12 @@
 import {Injectable} from '@angular/core';
-import {CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree, Router} from '@angular/router';
-import {Observable} from 'rxjs';
+import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, Router, CanLoad, Route } from '@angular/router';
 import {UsuarioService} from "../services/usuario.service";
 import {tap} from "rxjs/operators";
 
 @Injectable({
   providedIn: 'root'
 })
-export class AuthGuard implements CanActivate {
-
+export class AuthGuard implements CanActivate, CanLoad {
   constructor(
     private usuarioService: UsuarioService,
     private router: Router
@@ -22,15 +20,27 @@ export class AuthGuard implements CanActivate {
     return this.usuarioService.validarToken()
       .pipe(
         tap(
-          isAutenticated => {
+          estaAutenticado => {
             // Si no esta autenticado lo saca
-            if (!isAutenticated) {
+            if (!estaAutenticado) {
               this.router.navigateByUrl('/login');
             }
           }
         )
       );
 
+  }
+
+  // @ts-ignore
+  canLoad(route: Route, segments: import("@angular/router").UrlSegment[]): boolean | import("@angular/router").UrlTree | import("rxjs").Observable<boolean | import("@angular/router").UrlTree> | Promise<boolean | import("@angular/router").UrlTree> {
+    return this.usuarioService.validarToken()
+      .pipe(
+        tap( estaAutenticado =>  {
+          if ( !estaAutenticado ) {
+            this.router.navigateByUrl('/login');
+          }
+        })
+      );
   }
 
 }
